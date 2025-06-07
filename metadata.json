@@ -1,0 +1,6 @@
+{
+  "name": "HR Agent",
+  "description": "A web application to manage and review employee information efficiently, built with React, TypeScript, and Tailwind CSS.",
+  "requestFramePermissions": [],
+  "prompt": ""
+}

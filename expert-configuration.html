@@ -1,0 +1,380 @@
+
+<html>
+  <head>
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
+    <link
+      rel="stylesheet"
+      as="style"
+      onload="this.rel='stylesheet'"
+      href="https://fonts.googleapis.com/css2?display=swap&family=Inter:wght@400;500;700;900&family=Noto+Sans:wght@400;500;700;900"
+    />
+
+    <title>Expert Configuration - HR Agent</title>
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script> 
+    <style>
+      body {
+        font-family: 'Inter', "Noto Sans", sans-serif;
+      }
+      /* Styles for the modal backdrop and content */
+      #addExpertModal {
+        transition: opacity 0.3s ease-in-out;
+      }
+      #addExpertModal > div { /* Modal content */
+        transition: transform 0.3s ease-in-out;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="relative flex size-full min-h-screen flex-col bg-[#0f1a24] dark group/design-root overflow-x-hidden">
+      <div class="layout-container flex h-full grow flex-col">
+        <header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#20364b] px-10 py-3">
+          <div class="flex items-center gap-4 text-white">
+            <div class="size-4">
+              <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g clip-path="url(#clip0_6_319_expert)">
+                  <path
+                    d="M8.57829 8.57829C5.52816 11.6284 3.451 15.5145 2.60947 19.7452C1.76794 23.9758 2.19984 28.361 3.85056 32.3462C5.50128 36.3314 8.29667 39.7376 11.8832 42.134C15.4698 44.5305 19.6865 45.8096 24 45.8096C28.3135 45.8096 32.5302 44.5305 36.1168 42.134C39.7033 39.7375 42.4987 36.3314 44.1494 32.3462C45.8002 28.361 46.2321 23.9758 45.3905 19.7452C44.549 15.5145 42.4718 11.6284 39.4217 8.57829L24 24L8.57829 8.57829Z"
+                    fill="currentColor"
+                  ></path>
+                </g>
+                <defs>
+                  <clipPath id="clip0_6_319_expert"><rect width="48" height="48" fill="white"></rect></clipPath>
+                </defs>
+              </svg>
+            </div>
+            <h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em]">Dear HR</h2>
+          </div>
+          <div class="flex flex-1 justify-end gap-8">
+            <div class="flex items-center gap-9">
+              <a class="text-white text-sm font-medium leading-normal hover:text-gray-300 transition-colors" href="/index.html">Dashboard</a>
+            </div>
+            <div
+              class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10"
+              style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBQ35XRMoc17Bt9KaM1XiotdPTWoxoH9ilOOowrP9VSVWP9k3hrkQ2aAZdmsvUMBmx2A-LzM4UsHZq4eArs44Plvl11JIGAa4vtyf_X6EStKYk57xIcmeAWItHM1Gd3mCTbb-dPjOmH9aBf1iS0kKmWUD8hjw5q55aDOAurR0vEnxTD75U84KrudYWT515yOmZkx6W03VcfHeI0pbKBhMS0b0hn-cnsEBIr8lR9UyNEw6mTp-4fCyz3r1Q3icFgR1XwnE-cc1Skse9U");'
+              aria-label="User avatar"
+            ></div>
+          </div>
+        </header>
+        <div class="px-4 sm:px-10 md:px-20 lg:px-40 flex flex-1 justify-center py-5">
+          <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+            <div class="flex flex-wrap justify-between items-center gap-3 p-4">
+              <p class="text-white tracking-light text-[32px] font-bold leading-tight min-w-72">Experts</p>
+              <button
+                id="openAddExpertModalButton"
+                class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-8 px-4 bg-[#20364b] hover:bg-[#2e4e6b] text-white text-sm font-medium leading-normal transition-colors"
+              >
+                <span class="truncate">Add Expert</span>
+              </button>
+            </div>
+            <div class="px-4 py-3 @container">
+              <div class="flex overflow-x-auto rounded-xl border border-[#2e4e6b] bg-[#0f1a24]">
+                <table class="flex-1 min-w-full">
+                  <thead>
+                    <tr class="bg-[#172736]">
+                      <th class="table-a6f5da4f-column-name px-4 py-3 text-left text-white text-sm font-medium leading-normal w-[30%] sm:w-[25%]">Expert Name</th>
+                      <th class="table-a6f5da4f-column-email px-4 py-3 text-left text-white text-sm font-medium leading-normal w-[35%] sm:w-[30%]">Email ID</th>
+                      <th class="table-a6f5da4f-column-mobile px-4 py-3 text-left text-white text-sm font-medium leading-normal w-[25%] sm:w-[25%]">
+                        Mobile Number
+                      </th>
+                      <th class="table-a6f5da4f-column-actions px-4 py-3 text-left text-white text-sm font-medium leading-normal w-[10%] sm:w-[20%]">
+                        Actions
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody id="expertsTableBody">
+                    <!-- Expert rows will be dynamically inserted here -->
+                  </tbody>
+                </table>
+              </div>
+              <style>
+                /* Responsive column hiding (unchanged) */
+                @media (max-width: 768px) { }
+                @media (max-width: 640px) { .table-a6f5da4f-column-mobile { display: none; } }
+                @media (max-width: 480px) { .table-a6f5da4f-column-email { display: none; } }
+              </style>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Add Expert Modal (structure unchanged) -->
+      <div id="addExpertModal" class="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 p-4" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="addExpertModalTitle">
+        <div class="relative flex flex-col bg-[#172736] text-white w-full max-w-lg rounded-xl shadow-2xl overflow-hidden" onclick="event.stopPropagation();">
+          <header class="flex items-center justify-between p-4 sm:p-5 border-b border-[#2e4e6b]">
+            <h2 id="addExpertModalTitle" class="text-lg sm:text-xl font-bold">Add New Expert</h2>
+            <button id="closeAddExpertModalButton" type="button" class="text-[#8daece] hover:text-white transition-colors" aria-label="Close modal">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+          </header>
+          <form id="addExpertForm">
+            <div class="p-4 sm:p-6 space-y-4">
+              <div>
+                <label for="expertName" class="block text-sm font-medium text-[#8daece] mb-1">Name</label>
+                <input type="text" name="expertName" id="expertName" required
+                       class="form-input w-full rounded-lg border-none bg-[#20364b] text-white placeholder:text-[#6b7f96] focus:ring-2 focus:ring-[#359dff] h-10 px-3">
+              </div>
+              <div>
+                <label for="expertEmail" class="block text-sm font-medium text-[#8daece] mb-1">Email ID</label>
+                <input type="email" name="expertEmail" id="expertEmail" required
+                       class="form-input w-full rounded-lg border-none bg-[#20364b] text-white placeholder:text-[#6b7f96] focus:ring-2 focus:ring-[#359dff] h-10 px-3">
+              </div>
+              <div>
+                <label for="expertMobile" class="block text-sm font-medium text-[#8daece] mb-1">Mobile Number</label>
+                <input type="tel" name="expertMobile" id="expertMobile" required
+                       class="form-input w-full rounded-lg border-none bg-[#20364b] text-white placeholder:text-[#6b7f96] focus:ring-2 focus:ring-[#359dff] h-10 px-3">
+              </div>
+            </div>
+            <footer class="flex justify-end items-center gap-3 p-4 sm:p-5 bg-[#0f1a2470] border-t border-t-[#2e4e6b]">
+              <button id="cancelAddExpertButton" type="button"
+                      class="flex min-w-[80px] cursor-pointer items-center justify-center rounded-xl h-9 px-4 bg-gray-700 hover:bg-gray-600 text-white text-sm font-medium transition-colors">
+                Cancel
+              </button>
+              <button id="saveAddExpertButton" type="submit"
+                      class="flex min-w-[80px] cursor-pointer items-center justify-center rounded-xl h-9 px-4 bg-[#359dff] hover:bg-[#5cb0ff] text-[#0f1a24] text-sm font-bold transition-colors">
+                Save
+              </button>
+            </footer>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        // --- Supabase Client Setup ---
+        const SUPABASE_URL_EXPERT_CONFIG_PLACEHOLDER = "https://kxfxwhlpljjipxgkzvwk.supabase.co";
+        const SUPABASE_ANON_KEY_EXPERT_CONFIG_PLACEHOLDER = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt4Znh3aGxwbGpqaXB4Z2t6dndrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg3NzM2MDksImV4cCI6MjA2NDM0OTYwOX0.zrrW2G2c8rrizT4IAXaTBXbfy7ZZjQ460xbkb0yEUNs";
+
+        // ** IMPORTANT **: Replace these placeholders with your ACTUAL Supabase project URL and Public Anon Key
+        const SUPABASE_URL_EXPERT_CONFIG = "https://kxfxwhlpljjipxgkzvwk.supabase.co"; // Replace with your actual Supabase URL
+        const SUPABASE_ANON_KEY_EXPERT_CONFIG = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt4Znh3aGxwbGpqaXB4Z2t6dndrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg3NzM2MDksImV4cCI6MjA2NDM0OTYwOX0.zrrW2G2c8rrizT4IAXaTBXbfy7ZZjQ460xbkb0yEUNs"; // Replace with your actual PUBLIC ANON KEY
+
+
+        let supabase;
+        if (SUPABASE_URL_EXPERT_CONFIG === SUPABASE_URL_EXPERT_CONFIG_PLACEHOLDER || SUPABASE_ANON_KEY_EXPERT_CONFIG === SUPABASE_ANON_KEY_EXPERT_CONFIG_PLACEHOLDER) {
+          console.warn(
+            "******************************************************************************************\n" +
+            "CRITICAL CONFIGURATION NEEDED FOR EXPERT CONFIGURATION PAGE (Supabase):\n" +
+            "You are using placeholder values for Supabase configuration in expert-configuration.html.\n" +
+            "Please replace the placeholder values for 'SUPABASE_URL_EXPERT_CONFIG' and 'SUPABASE_ANON_KEY_EXPERT_CONFIG'\n" +
+            "in the <script> section of expert-configuration.html with your actual Supabase Project URL and PUBLIC ANONYMOUS key.\n" +
+            "\n" +
+            "NEVER USE YOUR SERVICE_ROLE KEY HERE. IT IS A HUGE SECURITY RISK.\n" +
+            "The public anonymous key is designed for client-side use. Secure your data with Row Level Security (RLS) policies in Supabase.\n" +
+            "\n" +
+            "Find your keys in your Supabase Dashboard: Project Settings -> API -> Project API keys.\n" +
+            "The expert table WILL NOT FUNCTION correctly until this is done.\n" +
+            "******************************************************************************************"
+          );
+        } else {
+          try {
+            supabase = Supabase.createClient(SUPABASE_URL_EXPERT_CONFIG, SUPABASE_ANON_KEY_EXPERT_CONFIG);
+          } catch (e) {
+            console.error("Error initializing Supabase client for expert configuration:", e);
+            const expertsTableBody = document.getElementById('expertsTableBody');
+            if (expertsTableBody) {
+                expertsTableBody.innerHTML = `<tr><td colspan="4" class="h-[72px] px-4 py-2 text-center text-red-400 text-sm">Error initializing database connection. Check console.</td></tr>`;
+            }
+          }
+        }
+
+        // --- Modal Elements & Logic (existing) ---
+        const openAddExpertModalBtn = document.getElementById('openAddExpertModalButton');
+        const addExpertModal = document.getElementById('addExpertModal');
+        const closeAddExpertModalButton = document.getElementById('closeAddExpertModalButton');
+        const cancelAddExpertButton = document.getElementById('cancelAddExpertButton');
+        const addExpertForm = document.getElementById('addExpertForm');
+        const saveAddExpertButton = document.getElementById('saveAddExpertButton');
+        const expertNameInput = document.getElementById('expertName');
+        const expertEmailInput = document.getElementById('expertEmail');
+        const expertMobileInput = document.getElementById('expertMobile');
+        let focusedElementBeforeModal;
+
+        function openModal() {
+          if (!addExpertModal) return;
+          if (addExpertModal.style.display === 'flex') return;
+          focusedElementBeforeModal = document.activeElement;
+          addExpertModal.style.opacity = '0';
+          addExpertModal.style.display = 'flex';
+          addExpertModal.offsetHeight; 
+          addExpertModal.style.opacity = '1';
+          if (addExpertModal.firstElementChild) {
+             addExpertModal.firstElementChild.style.transform = 'scale(0.95)';
+             addExpertModal.firstElementChild.offsetHeight;
+             addExpertModal.firstElementChild.style.transform = 'scale(1)';
+          }
+          document.body.style.overflow = 'hidden';
+          if (expertNameInput) expertNameInput.focus();
+        }
+
+        function closeModal() {
+          if (!addExpertModal) return;
+          if (addExpertModal.style.display === 'none') return;
+          addExpertModal.style.opacity = '0';
+          if (addExpertModal.firstElementChild) {
+            addExpertModal.firstElementChild.style.transform = 'scale(0.95)';
+          }
+          setTimeout(() => {
+            addExpertModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            if (focusedElementBeforeModal) focusedElementBeforeModal.focus();
+          }, 300);
+        }
+
+        if (openAddExpertModalBtn) openAddExpertModalBtn.addEventListener('click', openModal);
+        if (closeAddExpertModalButton) closeAddExpertModalButton.addEventListener('click', closeModal);
+        if (cancelAddExpertButton) cancelAddExpertButton.addEventListener('click', closeModal);
+        if (addExpertModal) {
+            addExpertModal.addEventListener('click', (event) => {
+                if (event.target === addExpertModal) closeModal();
+            });
+        }
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && addExpertModal && addExpertModal.style.display === 'flex') closeModal();
+        });
+
+        if (addExpertForm) {
+            addExpertForm.addEventListener('submit', function(event) {
+              event.preventDefault();
+              const nameValue = expertNameInput ? expertNameInput.value.trim() : '';
+              const emailValue = expertEmailInput ? expertEmailInput.value.trim() : '';
+              const mobileValue = expertMobileInput ? expertMobileInput.value.trim() : '';
+
+              if (!nameValue || !emailValue || !mobileValue) {
+                alert('Please fill in all fields.');
+                if(!nameValue && expertNameInput) expertNameInput.focus();
+                else if(!emailValue && expertEmailInput) expertEmailInput.focus();
+                else if (expertMobileInput) expertMobileInput.focus();
+                return;
+              }
+              
+              const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+              if (!emailRegex.test(emailValue)) {
+                alert('Please enter a valid email address.');
+                if (expertEmailInput) expertEmailInput.focus();
+                return;
+              }
+
+              const expertData = { name: nameValue, email: emailValue, mobile: mobileValue };
+              const jsonDataString = JSON.stringify(expertData);
+              const encodedJsonData = encodeURIComponent(jsonDataString);
+              const webhookUrl = `http://localhost:5678/webhook/5f4f82f7-33fc-4541-a612-90365bca1e14?data=${encodedJsonData}`;
+
+              if (saveAddExpertButton) {
+                saveAddExpertButton.disabled = true;
+                saveAddExpertButton.textContent = 'Saving...';
+              }
+
+              fetch(webhookUrl, { method: 'GET' })
+                .then(response => {
+                  if (response.ok) {
+                    return response.text().then(text => {
+                        try { const jsonResponse = JSON.parse(text); alert(jsonResponse.message || 'Expert added successfully!'); }
+                        catch (e) { alert(text || 'Expert added successfully!'); }
+                        addExpertForm.reset();
+                        closeModal();
+                        fetchAndRenderExperts(); // Refresh table
+                    });
+                  } else {
+                    return response.json()
+                      .then(errData => { throw new Error(errData.message || `Server error: ${response.status}`); })
+                      .catch(() => { throw new Error(`Server error: ${response.status} ${response.statusText}`); });
+                  }
+                })
+                .catch(error => {
+                  console.error('Error sending data to webhook:', error);
+                  alert(`An error occurred: ${error.message}. Please check the console and try again.`);
+                })
+                .finally(() => {
+                    if (saveAddExpertButton) {
+                        saveAddExpertButton.disabled = false;
+                        saveAddExpertButton.textContent = 'Save';
+                    }
+                });
+            });
+        }
+
+        // --- Fetch and Render Experts ---
+        const expertsTableBody = document.getElementById('expertsTableBody');
+
+        async function fetchAndRenderExperts() {
+          if (!supabase) {
+            if (expertsTableBody && (SUPABASE_URL_EXPERT_CONFIG === SUPABASE_URL_EXPERT_CONFIG_PLACEHOLDER || SUPABASE_ANON_KEY_EXPERT_CONFIG === SUPABASE_ANON_KEY_EXPERT_CONFIG_PLACEHOLDER)) {
+                expertsTableBody.innerHTML = `<tr><td colspan="4" class="h-[72px] px-4 py-2 text-center text-red-400 text-sm">Supabase client not initialized. Please configure URL and Key in the script.</td></tr>`;
+            } else if (expertsTableBody) {
+                 expertsTableBody.innerHTML = `<tr><td colspan="4" class="h-[72px] px-4 py-2 text-center text-red-400 text-sm">Supabase client failed to initialize. Check console.</td></tr>`;
+            }
+            return;
+          }
+          if (!expertsTableBody) return;
+
+          expertsTableBody.innerHTML = `<tr><td colspan="4" class="h-[72px] px-4 py-2 text-center text-[#8daece] text-sm">Loading experts...</td></tr>`;
+
+          try {
+            const { data: experts, error } = await supabase
+              .from('interview_experts')
+              .select('id, expert_name, expert_email, expert_mobile');
+
+            if (error) {
+              throw error;
+            }
+
+            expertsTableBody.innerHTML = ''; // Clear loading message
+
+            if (!experts || experts.length === 0) {
+              expertsTableBody.innerHTML = `<tr><td colspan="4" class="h-[72px] px-4 py-2 text-center text-[#8daece] text-sm">No experts found.</td></tr>`;
+              return;
+            }
+
+            experts.forEach(expert => {
+              const tr = document.createElement('tr');
+              tr.className = 'border-t border-t-[#2e4e6b]';
+
+              // Sanitize text content
+              const sanitize = (text) => {
+                const temp = document.createElement('div');
+                temp.textContent = text;
+                return temp.innerHTML;
+              }
+
+              tr.innerHTML = `
+                <td class="table-a6f5da4f-column-name h-[72px] px-4 py-2 text-white text-sm font-normal leading-normal">
+                  ${sanitize(expert.expert_name || '')}
+                </td>
+                <td class="table-a6f5da4f-column-email h-[72px] px-4 py-2 text-[#8daece] text-sm font-normal leading-normal break-all">
+                  ${sanitize(expert.expert_email || '')}
+                </td>
+                <td class="table-a6f5da4f-column-mobile h-[72px] px-4 py-2 text-[#8daece] text-sm font-normal leading-normal">
+                  ${sanitize(expert.expert_mobile || '')}
+                </td>
+                <td class="table-a6f5da4f-column-actions h-[72px] px-4 py-2 text-[#8daece]">
+                  <button aria-label="Edit ${sanitize(expert.expert_name || 'expert')}" title="Edit Expert" class="p-1 text-[#8daece] hover:text-white transition-colors focus:outline-none focus:ring-1 focus:ring-sky-500 rounded">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256" class="inline-block">
+                      <path d="M227.31,73.37,182.63,28.68a16,16,0,0,0-22.63,0L36.69,152A15.86,15.86,0,0,0,32,163.31V208a16,16,0,0,0,16,16H92.69A15.86,15.86,0,0,0,104,219.31L227.31,96a16,16,0,0,0,0-22.63ZM92.69,208H48V163.31l88-88L180.69,120ZM192,108.68,147.31,64l24-24L216,84.68Z"></path>
+                    </svg>
+                  </button>
+                  <button aria-label="Delete ${sanitize(expert.expert_name || 'expert')}" title="Delete Expert" class="p-1 text-red-400 hover:text-red-600 transition-colors focus:outline-none focus:ring-1 focus:ring-red-500 rounded ml-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256" class="inline-block">
+                      <path d="M216,48H176V40a24,24,0,0,0-24-24H104A24,24,0,0,0,80,40v8H40a8,8,0,0,0,0,16h8V208a16,16,0,0,0,16,16H192a16,16,0,0,0,16-16V64h8a8,8,0,0,0,0-16ZM96,40a8,8,0,0,1,8-8h48a8,8,0,0,1,8,8v8H96Zm96,168H64V64H192ZM112,104v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm48,0v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Z"></path>
+                    </svg>
+                  </button>
+                </td>
+              `;
+              expertsTableBody.appendChild(tr);
+            });
+
+          } catch (error) {
+            console.error('Error fetching experts:', error);
+            expertsTableBody.innerHTML = `<tr><td colspan="4" class="h-[72px] px-4 py-2 text-center text-red-400 text-sm">Error fetching experts: ${error.message || 'Unknown error'}. Check console.</td></tr>`;
+          }
+        }
+
+        // Initial fetch
+        fetchAndRenderExperts();
+      });
+    </script>
+  </body>
+</html>
