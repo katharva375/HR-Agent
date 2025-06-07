@@ -18,11 +18,10 @@
       body {
         font-family: 'Inter', "Noto Sans", sans-serif;
       }
-      /* Styles for the modal backdrop and content */
       #addExpertModal {
         transition: opacity 0.3s ease-in-out;
       }
-      #addExpertModal > div { /* Modal content */
+      #addExpertModal > div {
         transition: transform 0.3s ease-in-out;
       }
     </style>
@@ -34,14 +33,14 @@
           <div class="flex items-center gap-4 text-white">
             <div class="size-4">
               <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g clip-path="url(#clip0_6_319_expert)">
+                <g clip-path="url(#clip0_6_319_expert_header_logo)">
                   <path
                     d="M8.57829 8.57829C5.52816 11.6284 3.451 15.5145 2.60947 19.7452C1.76794 23.9758 2.19984 28.361 3.85056 32.3462C5.50128 36.3314 8.29667 39.7376 11.8832 42.134C15.4698 44.5305 19.6865 45.8096 24 45.8096C28.3135 45.8096 32.5302 44.5305 36.1168 42.134C39.7033 39.7375 42.4987 36.3314 44.1494 32.3462C45.8002 28.361 46.2321 23.9758 45.3905 19.7452C44.549 15.5145 42.4718 11.6284 39.4217 8.57829L24 24L8.57829 8.57829Z"
                     fill="currentColor"
                   ></path>
                 </g>
                 <defs>
-                  <clipPath id="clip0_6_319_expert"><rect width="48" height="48" fill="white"></rect></clipPath>
+                  <clipPath id="clip0_6_319_expert_header_logo"><rect width="48" height="48" fill="white"></rect></clipPath>
                 </defs>
               </svg>
             </div>
@@ -90,7 +89,6 @@
                 </table>
               </div>
               <style>
-                /* Responsive column hiding (unchanged) */
                 @media (max-width: 768px) { }
                 @media (max-width: 640px) { .table-a6f5da4f-column-mobile { display: none; } }
                 @media (max-width: 480px) { .table-a6f5da4f-column-email { display: none; } }
@@ -100,7 +98,6 @@
         </div>
       </div>
 
-      <!-- Add Expert Modal (structure unchanged) -->
       <div id="addExpertModal" class="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 p-4" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="addExpertModalTitle">
         <div class="relative flex flex-col bg-[#172736] text-white w-full max-w-lg rounded-xl shadow-2xl overflow-hidden" onclick="event.stopPropagation();">
           <header class="flex items-center justify-between p-4 sm:p-5 border-b border-[#2e4e6b]">
@@ -142,238 +139,256 @@
       </div>
     </div>
 
-    <script>
+    <script type="module">
       document.addEventListener('DOMContentLoaded', () => {
-        // --- Supabase Client Setup ---
-        const SUPABASE_URL_EXPERT_CONFIG_PLACEHOLDER = "https://kxfxwhlpljjipxgkzvwk.supabase.co";
-        const SUPABASE_ANON_KEY_EXPERT_CONFIG_PLACEHOLDER = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt4Znh3aGxwbGpqaXB4Z2t6dndrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg3NzM2MDksImV4cCI6MjA2NDM0OTYwOX0.zrrW2G2c8rrizT4IAXaTBXbfy7ZZjQ460xbkb0yEUNs";
-
-        // ** IMPORTANT **: Replace these placeholders with your ACTUAL Supabase project URL and Public Anon Key
-        const SUPABASE_URL_EXPERT_CONFIG = "https://kxfxwhlpljjipxgkzvwk.supabase.co"; // Replace with your actual Supabase URL
-        const SUPABASE_ANON_KEY_EXPERT_CONFIG = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt4Znh3aGxwbGpqaXB4Z2t6dndrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg3NzM2MDksImV4cCI6MjA2NDM0OTYwOX0.zrrW2G2c8rrizT4IAXaTBXbfy7ZZjQ460xbkb0yEUNs"; // Replace with your actual PUBLIC ANON KEY
-
-
-        let supabase;
-        if (SUPABASE_URL_EXPERT_CONFIG === SUPABASE_URL_EXPERT_CONFIG_PLACEHOLDER || SUPABASE_ANON_KEY_EXPERT_CONFIG === SUPABASE_ANON_KEY_EXPERT_CONFIG_PLACEHOLDER) {
-          console.warn(
-            "******************************************************************************************\n" +
-            "CRITICAL CONFIGURATION NEEDED FOR EXPERT CONFIGURATION PAGE (Supabase):\n" +
-            "You are using placeholder values for Supabase configuration in expert-configuration.html.\n" +
-            "Please replace the placeholder values for 'SUPABASE_URL_EXPERT_CONFIG' and 'SUPABASE_ANON_KEY_EXPERT_CONFIG'\n" +
-            "in the <script> section of expert-configuration.html with your actual Supabase Project URL and PUBLIC ANONYMOUS key.\n" +
-            "\n" +
-            "NEVER USE YOUR SERVICE_ROLE KEY HERE. IT IS A HUGE SECURITY RISK.\n" +
-            "The public anonymous key is designed for client-side use. Secure your data with Row Level Security (RLS) policies in Supabase.\n" +
-            "\n" +
-            "Find your keys in your Supabase Dashboard: Project Settings -> API -> Project API keys.\n" +
-            "The expert table WILL NOT FUNCTION correctly until this is done.\n" +
-            "******************************************************************************************"
-          );
-        } else {
-          try {
-            supabase = Supabase.createClient(SUPABASE_URL_EXPERT_CONFIG, SUPABASE_ANON_KEY_EXPERT_CONFIG);
-          } catch (e) {
-            console.error("Error initializing Supabase client for expert configuration:", e);
-            const expertsTableBody = document.getElementById('expertsTableBody');
-            if (expertsTableBody) {
-                expertsTableBody.innerHTML = `<tr><td colspan="4" class="h-[72px] px-4 py-2 text-center text-red-400 text-sm">Error initializing database connection. Check console.</td></tr>`;
-            }
-          }
-        }
-
-        // --- Modal Elements & Logic (existing) ---
-        const openAddExpertModalBtn = document.getElementById('openAddExpertModalButton');
-        const addExpertModal = document.getElementById('addExpertModal');
-        const closeAddExpertModalButton = document.getElementById('closeAddExpertModalButton');
-        const cancelAddExpertButton = document.getElementById('cancelAddExpertButton');
-        const addExpertForm = document.getElementById('addExpertForm');
-        const saveAddExpertButton = document.getElementById('saveAddExpertButton');
-        const expertNameInput = document.getElementById('expertName');
-        const expertEmailInput = document.getElementById('expertEmail');
-        const expertMobileInput = document.getElementById('expertMobile');
-        let focusedElementBeforeModal;
-
-        function openModal() {
-          if (!addExpertModal) return;
-          if (addExpertModal.style.display === 'flex') return;
-          focusedElementBeforeModal = document.activeElement;
-          addExpertModal.style.opacity = '0';
-          addExpertModal.style.display = 'flex';
-          addExpertModal.offsetHeight; 
-          addExpertModal.style.opacity = '1';
-          if (addExpertModal.firstElementChild) {
-             addExpertModal.firstElementChild.style.transform = 'scale(0.95)';
-             addExpertModal.firstElementChild.offsetHeight;
-             addExpertModal.firstElementChild.style.transform = 'scale(1)';
-          }
-          document.body.style.overflow = 'hidden';
-          if (expertNameInput) expertNameInput.focus();
-        }
-
-        function closeModal() {
-          if (!addExpertModal) return;
-          if (addExpertModal.style.display === 'none') return;
-          addExpertModal.style.opacity = '0';
-          if (addExpertModal.firstElementChild) {
-            addExpertModal.firstElementChild.style.transform = 'scale(0.95)';
-          }
-          setTimeout(() => {
-            addExpertModal.style.display = 'none';
-            document.body.style.overflow = 'auto';
-            if (focusedElementBeforeModal) focusedElementBeforeModal.focus();
-          }, 300);
-        }
-
-        if (openAddExpertModalBtn) openAddExpertModalBtn.addEventListener('click', openModal);
-        if (closeAddExpertModalButton) closeAddExpertModalButton.addEventListener('click', closeModal);
-        if (cancelAddExpertButton) cancelAddExpertButton.addEventListener('click', closeModal);
-        if (addExpertModal) {
-            addExpertModal.addEventListener('click', (event) => {
-                if (event.target === addExpertModal) closeModal();
-            });
-        }
-        document.addEventListener('keydown', (event) => {
-            if (event.key === 'Escape' && addExpertModal && addExpertModal.style.display === 'flex') closeModal();
-        });
-
-        if (addExpertForm) {
-            addExpertForm.addEventListener('submit', function(event) {
-              event.preventDefault();
-              const nameValue = expertNameInput ? expertNameInput.value.trim() : '';
-              const emailValue = expertEmailInput ? expertEmailInput.value.trim() : '';
-              const mobileValue = expertMobileInput ? expertMobileInput.value.trim() : '';
-
-              if (!nameValue || !emailValue || !mobileValue) {
-                alert('Please fill in all fields.');
-                if(!nameValue && expertNameInput) expertNameInput.focus();
-                else if(!emailValue && expertEmailInput) expertEmailInput.focus();
-                else if (expertMobileInput) expertMobileInput.focus();
-                return;
-              }
-              
-              const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-              if (!emailRegex.test(emailValue)) {
-                alert('Please enter a valid email address.');
-                if (expertEmailInput) expertEmailInput.focus();
-                return;
-              }
-
-              const expertData = { name: nameValue, email: emailValue, mobile: mobileValue };
-              const jsonDataString = JSON.stringify(expertData);
-              const encodedJsonData = encodeURIComponent(jsonDataString);
-              const webhookUrl = `http://localhost:5678/webhook/5f4f82f7-33fc-4541-a612-90365bca1e14?data=${encodedJsonData}`;
-
-              if (saveAddExpertButton) {
-                saveAddExpertButton.disabled = true;
-                saveAddExpertButton.textContent = 'Saving...';
-              }
-
-              fetch(webhookUrl, { method: 'GET' })
-                .then(response => {
-                  if (response.ok) {
-                    return response.text().then(text => {
-                        try { const jsonResponse = JSON.parse(text); alert(jsonResponse.message || 'Expert added successfully!'); }
-                        catch (e) { alert(text || 'Expert added successfully!'); }
-                        addExpertForm.reset();
-                        closeModal();
-                        fetchAndRenderExperts(); // Refresh table
-                    });
-                  } else {
-                    return response.json()
-                      .then(errData => { throw new Error(errData.message || `Server error: ${response.status}`); })
-                      .catch(() => { throw new Error(`Server error: ${response.status} ${response.statusText}`); });
-                  }
-                })
-                .catch(error => {
-                  console.error('Error sending data to webhook:', error);
-                  alert(`An error occurred: ${error.message}. Please check the console and try again.`);
-                })
-                .finally(() => {
-                    if (saveAddExpertButton) {
-                        saveAddExpertButton.disabled = false;
-                        saveAddExpertButton.textContent = 'Save';
-                    }
-                });
-            });
-        }
-
-        // --- Fetch and Render Experts ---
+        // --- PRE-SCRIPT-EXECUTION DOM CHECK ---
         const expertsTableBody = document.getElementById('expertsTableBody');
-
-        async function fetchAndRenderExperts() {
-          if (!supabase) {
-            if (expertsTableBody && (SUPABASE_URL_EXPERT_CONFIG === SUPABASE_URL_EXPERT_CONFIG_PLACEHOLDER || SUPABASE_ANON_KEY_EXPERT_CONFIG === SUPABASE_ANON_KEY_EXPERT_CONFIG_PLACEHOLDER)) {
-                expertsTableBody.innerHTML = `<tr><td colspan="4" class="h-[72px] px-4 py-2 text-center text-red-400 text-sm">Supabase client not initialized. Please configure URL and Key in the script.</td></tr>`;
-            } else if (expertsTableBody) {
-                 expertsTableBody.innerHTML = `<tr><td colspan="4" class="h-[72px] px-4 py-2 text-center text-red-400 text-sm">Supabase client failed to initialize. Check console.</td></tr>`;
-            }
-            return;
-          }
-          if (!expertsTableBody) return;
-
-          expertsTableBody.innerHTML = `<tr><td colspan="4" class="h-[72px] px-4 py-2 text-center text-[#8daece] text-sm">Loading experts...</td></tr>`;
-
-          try {
-            const { data: experts, error } = await supabase
-              .from('interview_experts')
-              .select('id, expert_name, expert_email, expert_mobile');
-
-            if (error) {
-              throw error;
-            }
-
-            expertsTableBody.innerHTML = ''; // Clear loading message
-
-            if (!experts || experts.length === 0) {
-              expertsTableBody.innerHTML = `<tr><td colspan="4" class="h-[72px] px-4 py-2 text-center text-[#8daece] text-sm">No experts found.</td></tr>`;
-              return;
-            }
-
-            experts.forEach(expert => {
-              const tr = document.createElement('tr');
-              tr.className = 'border-t border-t-[#2e4e6b]';
-
-              // Sanitize text content
-              const sanitize = (text) => {
-                const temp = document.createElement('div');
-                temp.textContent = text;
-                return temp.innerHTML;
-              }
-
-              tr.innerHTML = `
-                <td class="table-a6f5da4f-column-name h-[72px] px-4 py-2 text-white text-sm font-normal leading-normal">
-                  ${sanitize(expert.expert_name || '')}
-                </td>
-                <td class="table-a6f5da4f-column-email h-[72px] px-4 py-2 text-[#8daece] text-sm font-normal leading-normal break-all">
-                  ${sanitize(expert.expert_email || '')}
-                </td>
-                <td class="table-a6f5da4f-column-mobile h-[72px] px-4 py-2 text-[#8daece] text-sm font-normal leading-normal">
-                  ${sanitize(expert.expert_mobile || '')}
-                </td>
-                <td class="table-a6f5da4f-column-actions h-[72px] px-4 py-2 text-[#8daece]">
-                  <button aria-label="Edit ${sanitize(expert.expert_name || 'expert')}" title="Edit Expert" class="p-1 text-[#8daece] hover:text-white transition-colors focus:outline-none focus:ring-1 focus:ring-sky-500 rounded">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256" class="inline-block">
-                      <path d="M227.31,73.37,182.63,28.68a16,16,0,0,0-22.63,0L36.69,152A15.86,15.86,0,0,0,32,163.31V208a16,16,0,0,0,16,16H92.69A15.86,15.86,0,0,0,104,219.31L227.31,96a16,16,0,0,0,0-22.63ZM92.69,208H48V163.31l88-88L180.69,120ZM192,108.68,147.31,64l24-24L216,84.68Z"></path>
-                    </svg>
-                  </button>
-                  <button aria-label="Delete ${sanitize(expert.expert_name || 'expert')}" title="Delete Expert" class="p-1 text-red-400 hover:text-red-600 transition-colors focus:outline-none focus:ring-1 focus:ring-red-500 rounded ml-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256" class="inline-block">
-                      <path d="M216,48H176V40a24,24,0,0,0-24-24H104A24,24,0,0,0,80,40v8H40a8,8,0,0,0,0,16h8V208a16,16,0,0,0,16,16H192a16,16,0,0,0,16-16V64h8a8,8,0,0,0,0-16ZM96,40a8,8,0,0,1,8-8h48a8,8,0,0,1,8,8v8H96Zm96,168H64V64H192ZM112,104v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm48,0v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Z"></path>
-                    </svg>
-                  </button>
-                </td>
-              `;
-              expertsTableBody.appendChild(tr);
-            });
-
-          } catch (error) {
-            console.error('Error fetching experts:', error);
-            expertsTableBody.innerHTML = `<tr><td colspan="4" class="h-[72px] px-4 py-2 text-center text-red-400 text-sm">Error fetching experts: ${error.message || 'Unknown error'}. Check console.</td></tr>`;
-          }
+        if (!expertsTableBody) {
+            console.error('CRITICAL DOM FAILURE: expertsTableBody element not found! The page cannot function.');
+            alert('CRITICAL PAGE ERROR: The main table body (ID: expertsTableBody) was not found in the HTML. Please check the HTML structure. The page will not work.');
+            // Attempt to make error visible even if console/alert are missed
+            document.body.insertAdjacentHTML('afterbegin', '<p style="position:fixed;top:0;left:0;right:0;background:red;color:white;padding:15px;font-size:18px;font-weight:bold;text-align:center;z-index:10000;">FATAL ERROR: HTML element "expertsTableBody" is missing. Page cannot load expert data.</p>');
+            return; // Halt script execution
         }
+        // Attempt to write an initial message to confirm basic script operation
+        expertsTableBody.innerHTML = '<tr><td colspan="4" class="h-[72px] px-4 py-2 text-center text-yellow-300 text-base">Script loaded. Initializing checks...</td></tr>';
+        console.log('DOMContentLoaded event fired. expertsTableBody found. Initial message set.');
 
-        // Initial fetch
-        fetchAndRenderExperts();
+        // --- GLOBAL TRY-CATCH FOR THE REST OF THE SCRIPT ---
+        try {
+            // --- CHECK SUPABASE CDN LIBRARY ---
+            if (!window.supabase || typeof window.supabase.createClient !== 'function') {
+                console.error("CRITICAL LIBRARY FAILURE: Supabase JS library (supabase-js@2) not loaded from CDN or window.supabase.createClient is not a function.");
+                expertsTableBody.innerHTML = `<tr><td colspan="4" class="h-[72px] px-4 py-2 text-center text-red-500 text-base"><strong>Error: Supabase JavaScript library failed to load.</strong><br/>This is required for database operations. Please check your internet connection and the browser console for network errors related to 'cdn.jsdelivr.net/npm/@supabase/supabase-js@2'.</td></tr>`;
+                return; // Halt further script execution as Supabase is essential
+            }
+            console.log('Supabase JS library and createClient function confirmed to be loaded from CDN.');
+            expertsTableBody.innerHTML = '<tr><td colspan="4" class="h-[72px] px-4 py-2 text-center text-green-300 text-base">Supabase library loaded. Checking configuration...</td></tr>';
+
+            // --- SUPABASE CLIENT SETUP VARIABLES ---
+            let SUPABASE_URL_FROM_ENV;
+            let SUPABASE_ANON_KEY_FROM_ENV;
+            let supabaseInitializationError = null; // To store any error during init
+
+            // Check for Vite environment variables
+            if (typeof import.meta !== 'undefined' && typeof import.meta.env !== 'undefined') {
+                console.log('import.meta.env is defined. Attempting to read VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY.');
+                SUPABASE_URL_FROM_ENV = import.meta.env.VITE_SUPABASE_URL;
+                SUPABASE_ANON_KEY_FROM_ENV = import.meta.env.VITE_SUPABASE_ANON_KEY;
+                if (!SUPABASE_URL_FROM_ENV || !SUPABASE_ANON_KEY_FROM_ENV) {
+                    supabaseInitializationError = "Vite .env variables (VITE_SUPABASE_URL or VITE_SUPABASE_ANON_KEY) are missing. ";
+                    console.error('MISSING ENV VARS (Vite): ' + supabaseInitializationError);
+                } else {
+                    console.log('Supabase .env variables (Vite) found: URL exists, Key exists.');
+                }
+            } else {
+                supabaseInitializationError = "Vite `import.meta.env` is undefined. This HTML file might not be processed by Vite for .env variable injection. ";
+                console.error('MISSING import.meta.env: ' + supabaseInitializationError);
+            }
+            
+            let supabaseInstance;
+            if (supabaseInitializationError) { // If env vars are missing
+                 expertsTableBody.innerHTML = `<tr><td colspan="4" class="h-[72px] px-4 py-2 text-center text-red-400 text-sm"><strong>Configuration Error:</strong> ${supabaseInitializationError}<br/>Please set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in your .env file and ensure Vite processes this page.</td></tr>`;
+            } else {
+                 try {
+                    const { createClient } = window.supabase;
+                    supabaseInstance = createClient(SUPABASE_URL_FROM_ENV, SUPABASE_ANON_KEY_FROM_ENV);
+                    console.log('Supabase client initialized successfully.');
+                    expertsTableBody.innerHTML = '<tr><td colspan="4" class="h-[72px] px-4 py-2 text-center text-green-300 text-base">Supabase configured. Loading experts...</td></tr>';
+                } catch (e) {
+                    supabaseInitializationError = `Error initializing Supabase client: ${e.message}. `;
+                    console.error("Supabase client initialization error: ", e);
+                    expertsTableBody.innerHTML = `<tr><td colspan="4" class="h-[72px] px-4 py-2 text-center text-red-400 text-sm"><strong>Database Init Error:</strong> ${supabaseInitializationError} Check console.</td></tr>`;
+                }
+            }
+
+
+            // --- MODAL ELEMENTS & LOGIC (largely unchanged, ensure they are defined) ---
+            const openAddExpertModalBtn = document.getElementById('openAddExpertModalButton');
+            const addExpertModal = document.getElementById('addExpertModal');
+            const closeAddExpertModalButton = document.getElementById('closeAddExpertModalButton');
+            const cancelAddExpertButton = document.getElementById('cancelAddExpertButton');
+            const addExpertForm = document.getElementById('addExpertForm');
+            const saveAddExpertButton = document.getElementById('saveAddExpertButton'); // Used in form submit
+            const expertNameInput = document.getElementById('expertName');
+            const expertEmailInput = document.getElementById('expertEmail');
+            const expertMobileInput = document.getElementById('expertMobile');
+            let focusedElementBeforeModal;
+
+            // Log if crucial modal elements are found
+            console.log({ openAddExpertModalBtn, addExpertModal, closeAddExpertModalButton, cancelAddExpertButton, addExpertForm });
+
+            function openModal() {
+              if (!addExpertModal) { console.error('Cannot open modal: addExpertModal element is null.'); return; }
+              if (addExpertModal.style.display === 'flex') return;
+              focusedElementBeforeModal = document.activeElement;
+              addExpertModal.style.opacity = '0';
+              addExpertModal.style.display = 'flex';
+              addExpertModal.offsetHeight; 
+              addExpertModal.style.opacity = '1';
+              const modalContent = addExpertModal.firstElementChild;
+              if (modalContent) {
+                 modalContent.style.transform = 'scale(0.95)';
+                 modalContent.offsetHeight;
+                 modalContent.style.transform = 'scale(1)';
+              }
+              document.body.style.overflow = 'hidden';
+              if (expertNameInput instanceof HTMLInputElement) expertNameInput.focus();
+              console.log('Modal opened.');
+            }
+
+            function closeModal() {
+              if (!addExpertModal) { console.error('Cannot close modal: addExpertModal element is null.'); return; }
+              if (addExpertModal.style.display === 'none') return;
+              addExpertModal.style.opacity = '0';
+              const modalContent = addExpertModal.firstElementChild;
+              if (modalContent) modalContent.style.transform = 'scale(0.95)';
+              setTimeout(() => {
+                addExpertModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+                if (focusedElementBeforeModal instanceof HTMLElement) focusedElementBeforeModal.focus();
+              }, 300);
+              console.log('Modal closed.');
+            }
+
+            if (openAddExpertModalBtn) openAddExpertModalBtn.addEventListener('click', openModal);
+            else console.error('Add Expert button not found.');
+
+            if (closeAddExpertModalButton) closeAddExpertModalButton.addEventListener('click', closeModal);
+            else console.error('Close modal button (X) not found.');
+            
+            if (cancelAddExpertButton) cancelAddExpertButton.addEventListener('click', closeModal);
+            else console.error('Cancel button in modal not found.');
+            
+            if (addExpertModal) addExpertModal.addEventListener('click', (event) => { if (event.target === addExpertModal) closeModal(); });
+            else console.error('Modal backdrop element not found for click listener.');
+            
+            document.addEventListener('keydown', (event) => { if (event.key === 'Escape' && addExpertModal && addExpertModal.style.display === 'flex') closeModal(); });
+
+            if (addExpertForm) {
+                addExpertForm.addEventListener('submit', function(event) {
+                    event.preventDefault();
+                    if (!supabaseInstance) {
+                        alert('Database client is not initialized. Cannot save expert. Please resolve configuration errors.');
+                        console.error('Form submission failed: supabaseInstance is not initialized.');
+                        return;
+                    }
+                    const nameValue = expertNameInput instanceof HTMLInputElement ? expertNameInput.value.trim() : '';
+                    const emailValue = expertEmailInput instanceof HTMLInputElement ? expertEmailInput.value.trim() : '';
+                    const mobileValue = expertMobileInput instanceof HTMLInputElement ? expertMobileInput.value.trim() : '';
+
+                    if (!nameValue || !emailValue || !mobileValue) {
+                        alert('Please fill in all fields.'); return;
+                    }
+                    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue)) {
+                        alert('Please enter a valid email address.'); return;
+                    }
+                    
+                    const expertData = { name: nameValue, email: emailValue, mobile: mobileValue };
+                    const encodedJsonData = encodeURIComponent(JSON.stringify(expertData));
+                    const webhookUrl = `http://localhost:5678/webhook/5f4f82f7-33fc-4541-a612-90365bca1e14?data=${encodedJsonData}`;
+
+                    if (saveAddExpertButton instanceof HTMLButtonElement) {
+                        saveAddExpertButton.disabled = true; saveAddExpertButton.textContent = 'Saving...';
+                    }
+
+                    fetch(webhookUrl, { method: 'GET' })
+                        .then(response => {
+                            if (response.ok) return response.text();
+                            return response.json().then(errData => { throw new Error(errData.message || `Server error: ${response.status}`); });
+                        })
+                        .then(text => {
+                            try { const jsonResponse = JSON.parse(text); alert(jsonResponse.message || 'Expert added successfully!'); }
+                            catch (e) { alert(text || 'Expert added successfully!'); }
+                            if(addExpertForm instanceof HTMLFormElement) addExpertForm.reset();
+                            closeModal();
+                            fetchAndRenderExperts(); 
+                        })
+                        .catch(error => {
+                            console.error('Error sending data to webhook:', error);
+                            alert(`An error occurred: ${error.message}.`);
+                        })
+                        .finally(() => {
+                            if (saveAddExpertButton instanceof HTMLButtonElement) {
+                                saveAddExpertButton.disabled = false; saveAddExpertButton.textContent = 'Save';
+                            }
+                        });
+                });
+            } else {
+                console.error('Add Expert Form not found.');
+            }
+
+            // --- FETCH AND RENDER EXPERTS ---
+            async function fetchAndRenderExperts() {
+                if (!supabaseInstance) {
+                    console.warn('fetchAndRenderExperts: Supabase client not initialized. Cannot fetch experts.');
+                    // Error message should already be in table from init phase, so don't overwrite unless it's just a generic "loading"
+                    if (!expertsTableBody.innerHTML.includes('Error:') && !expertsTableBody.innerHTML.includes('failed')) {
+                         expertsTableBody.innerHTML = `<tr><td colspan="4" class="h-[72px] px-4 py-2 text-center text-red-400 text-sm">Cannot fetch: Database connection not ready.</td></tr>`;
+                    }
+                    return;
+                }
+                // Ensure "Loading..." doesn't overwrite a more specific error
+                if (!expertsTableBody.innerHTML.includes('Error:') && !expertsTableBody.innerHTML.includes('failed')) {
+                    expertsTableBody.innerHTML = `<tr><td colspan="4" class="h-[72px] px-4 py-2 text-center text-[#8daece] text-sm">Loading experts...</td></tr>`;
+                }
+                console.log('Fetching experts...');
+
+                try {
+                    const { data: experts, error } = await supabaseInstance
+                        .from('interview_experts')
+                        .select('id, expert_name, expert_email, expert_mobile');
+
+                    if (error) throw error;
+
+                    expertsTableBody.innerHTML = ''; 
+                    if (!experts || experts.length === 0) {
+                        expertsTableBody.innerHTML = `<tr><td colspan="4" class="h-[72px] px-4 py-2 text-center text-[#8daece] text-sm">No experts found.</td></tr>`;
+                        return;
+                    }
+
+                    const sanitize = (text) => text === null || typeof text === 'undefined' ? '' : String(text).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[m]);
+                    experts.forEach(expert => {
+                        const tr = document.createElement('tr');
+                        tr.className = 'border-t border-t-[#2e4e6b]';
+                        tr.innerHTML = \`
+                            <td class="table-a6f5da4f-column-name h-[72px] px-4 py-2 text-white text-sm font-normal leading-normal">\${sanitize(expert.expert_name)}</td>
+                            <td class="table-a6f5da4f-column-email h-[72px] px-4 py-2 text-[#8daece] text-sm font-normal leading-normal break-all">\${sanitize(expert.expert_email)}</td>
+                            <td class="table-a6f5da4f-column-mobile h-[72px] px-4 py-2 text-[#8daece] text-sm font-normal leading-normal">\${sanitize(expert.expert_mobile)}</td>
+                            <td class="table-a6f5da4f-column-actions h-[72px] px-4 py-2 text-[#8daece]">
+                                <button aria-label="Edit \${sanitize(expert.expert_name)}" title="Edit Expert" class="p-1 text-[#8daece] hover:text-white transition-colors focus:outline-none focus:ring-1 focus:ring-sky-500 rounded"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256"><path d="M227.31,73.37,182.63,28.68a16,16,0,0,0-22.63,0L36.69,152A15.86,15.86,0,0,0,32,163.31V208a16,16,0,0,0,16,16H92.69A15.86,15.86,0,0,0,104,219.31L227.31,96a16,16,0,0,0,0-22.63ZM92.69,208H48V163.31l88-88L180.69,120ZM192,108.68,147.31,64l24-24L216,84.68Z"></path></svg></button>
+                                <button aria-label="Delete \${sanitize(expert.expert_name)}" title="Delete Expert" class="p-1 text-red-400 hover:text-red-600 transition-colors focus:outline-none focus:ring-1 focus:ring-red-500 rounded ml-2"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256"><path d="M216,48H176V40a24,24,0,0,0-24-24H104A24,24,0,0,0,80,40v8H40a8,8,0,0,0,0,16h8V208a16,16,0,0,0,16,16H192a16,16,0,0,0,16-16V64h8a8,8,0,0,0,0-16ZM96,40a8,8,0,0,1,8-8h48a8,8,0,0,1,8,8v8H96Zm96,168H64V64H192ZM112,104v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm48,0v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Z"></path></svg></button>
+                            </td>
+                        \`;
+                        expertsTableBody.appendChild(tr);
+                    });
+                    console.log('Finished rendering experts.');
+                } catch (error) {
+                    console.error('Error fetching/rendering experts:', error);
+                    expertsTableBody.innerHTML = `<tr><td colspan="4" class="h-[72px] px-4 py-2 text-center text-red-400 text-sm">Error fetching experts: ${(error instanceof Error ? error.message : String(error))}. Check console.</td></tr>`;
+                }
+            }
+
+            // Initial fetch if Supabase client was initialized successfully
+            if (supabaseInstance) {
+                console.log('Calling fetchAndRenderExperts for initial load.');
+                fetchAndRenderExperts();
+            } else {
+                 console.warn('Initial fetch skipped: Supabase instance not available or pre-existing critical error was displayed.');
+                 // Ensure an error message is present if we didn't even try to fetch
+                 if (!expertsTableBody.innerHTML.includes('Error:') && !expertsTableBody.innerHTML.includes('failed')) {
+                    expertsTableBody.innerHTML = `<tr><td colspan="4" class="h-[72px] px-4 py-2 text-center text-orange-400 text-sm">Database connection not established. Data cannot be loaded. Review configuration.</td></tr>`;
+                 }
+            }
+
+        } catch(e) { // Catch for the main try block
+            console.error('Unhandled critical error in DOMContentLoaded:', e);
+            if (expertsTableBody) { // Check again in case it became null somehow, though unlikely
+                 expertsTableBody.innerHTML = `<tr><td colspan="4" class="h-[72px] px-4 py-2 text-center text-red-600 text-lg"><strong>CRITICAL SCRIPT ERROR:</strong><br/>${(e instanceof Error ? e.message : String(e))}.<br/>Page may not function. Check console.</td></tr>`;
+            } else {
+                 document.body.insertAdjacentHTML('afterbegin', `<p style="position:fixed;top:0;left:0;right:0;background:red;color:white;padding:15px;font-size:18px;font-weight:bold;text-align:center;z-index:10000;">CRITICAL SCRIPT ERROR (expertsTableBody missing): ${(e instanceof Error ? e.message : String(e))}.</p>`);
+            }
+        }
       });
     </script>
   </body>

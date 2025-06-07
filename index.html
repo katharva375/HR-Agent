@@ -32,56 +32,7 @@
   }
 }
 </script>
-  <script>
-    // Define process.env for Supabase client
-    // IMPORTANT: Replace these placeholder values with your actual Supabase project details.
-    // These values will be used by lib/supabaseClient.ts to connect to your Supabase instance.
-    const supabaseUrlPlaceholder = "https://kxfxwhlpljjipxgkzvwk.supabase.co";
-    const supabasePublicAnonKeyPlaceholder = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt4Znh3aGxwbGpqaXB4Z2t6dndrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg3NzM2MDksImV4cCI6MjA2NDM0OTYwOX0.zrrW2G2c8rrizT4IAXaTBXbfy7ZZjQ460xbkb0yEUNs";
-
-    window.process = {
-      env: {
-        SUPABASE_URL: "https://kxfxwhlpljjipxgkzvwk.supabase.co", 
-        // !!! CRITICAL SECURITY WARNING !!!
-        // The SUPABASE_ANON_KEY MUST be your project's PUBLIC ANONYMOUS KEY.
-        // It is designed for client-side use. Your data is protected by Row Level Security (RLS).
-        //
-        // DO NOT EVER use your `service_role` key or any other secret key here.
-        // Using a `service_role` key in client-side code is a MAJOR security vulnerability.
-        // 
-        // How to find your PUBLIC ANONYMOUS KEY:
-        // 1. Go to your Supabase project dashboard (app.supabase.com).
-        // 2. Navigate to Project Settings (the gear icon).
-        // 3. Click on "API" in the sidebar.
-        // 4. Under "Project API keys", copy the key labeled "anon" / "public".
-        // 5. Paste that key as the value for SUPABASE_ANON_KEY below, replacing the placeholder.
-        //
-        // For local development, you can replace the placeholder string directly.
-        // For production, consider environment variables if your deployment host supports them
-        // or ensure this file (with keys) is not committed to public repositories.
-        SUPABASE_ANON_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt4Znh3aGxwbGpqaXB4Z2t6dndrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg3NzM2MDksImV4cCI6MjA2NDM0OTYwOX0.zrrW2G2c8rrizT4IAXaTBXbfy7ZZjQ460xbkb0yEUNs"
-      }
-    };
-
-    if (window.process.env.SUPABASE_URL === supabaseUrlPlaceholder || 
-        window.process.env.SUPABASE_ANON_KEY === supabasePublicAnonKeyPlaceholder) {
-      console.warn(
-        "******************************************************************************************\n" +
-        "CRITICAL CONFIGURATION NEEDED FOR SUPABASE:\n" +
-        "You are using placeholder values for Supabase configuration in index.html.\n" +
-        "Please replace '" + supabaseUrlPlaceholder + "' with your actual Supabase Project URL.\n" +
-        "Please replace '" + supabasePublicAnonKeyPlaceholder + "' with your actual Supabase PUBLIC ANONYMOUS key.\n" +
-        "\n" +
-        "NEVER USE YOUR SERVICE_ROLE KEY HERE. IT IS A HUGE SECURITY RISK.\n" +
-        "The public anonymous key is designed for client-side use. Secure your data with Row Level Security (RLS) policies in Supabase.\n" +
-        "\n" +
-        "Find your keys in your Supabase Dashboard: Project Settings -> API -> Project API keys.\n" +
-        "The application WILL NOT FUNCTION correctly and will be INSECURE until this is done.\n" +
-        "******************************************************************************************"
-      );
-    }
-  </script>
-<link rel="stylesheet" href="/index.css">
+  
 </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
