@@ -36,12 +36,12 @@
     // Define process.env for Supabase client
     // IMPORTANT: Replace these placeholder values with your actual Supabase project details.
     // These values will be used by lib/supabaseClient.ts to connect to your Supabase instance.
-    const supabaseUrlPlaceholder = "https://kxfxwhlpljjipxgkzvwk.supabase.co";
-    const supabasePublicAnonKeyPlaceholder = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt4Znh3aGxwbGpqaXB4Z2t6dndrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg3NzM2MDksImV4cCI6MjA2NDM0OTYwOX0.zrrW2G2c8rrizT4IAXaTBXbfy7ZZjQ460xbkb0yEUNs";
+    const supabaseUrlPlaceholder = "YOUR_SUPABASE_URL";
+    const supabasePublicAnonKeyPlaceholder = "YOUR_SUPABASE_ANON_KEY";
 
     window.process = {
       env: {
-        SUPABASE_URL: "https://kxfxwhlpljjipxgkzvwk.supabase.co", 
+        SUPABASE_URL: "YOUR_SUPABASE_URL",
         // !!! CRITICAL SECURITY WARNING !!!
         // The SUPABASE_ANON_KEY MUST be your project's PUBLIC ANONYMOUS KEY.
         // It is designed for client-side use. Your data is protected by Row Level Security (RLS).
@@ -59,7 +59,7 @@
         // For local development, you can replace the placeholder string directly.
         // For production, consider environment variables if your deployment host supports them
         // or ensure this file (with keys) is not committed to public repositories.
-        SUPABASE_ANON_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt4Znh3aGxwbGpqaXB4Z2t6dndrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg3NzM2MDksImV4cCI6MjA2NDM0OTYwOX0.zrrW2G2c8rrizT4IAXaTBXbfy7ZZjQ460xbkb0yEUNs"
+        SUPABASE_ANON_KEY: "YOUR_SUPABASE_ANON_KEY"
       }
     };
 
